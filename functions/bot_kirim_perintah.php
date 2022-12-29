@@ -1,6 +1,10 @@
 <?php 
 
-function bot_kirim_perintah($perintah,$data,$bot_token){    
+function bot_kirim_perintah($perintah,$data,$bot_token = "default"){
+    if($bot_token == "default"){
+        $bot_token = f("get_config")("bot_token");
+    }
+
 	if(empty($data)){
 		$data = [];
 	}
