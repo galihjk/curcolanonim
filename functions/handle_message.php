@@ -29,11 +29,12 @@ function handle_message($botdata){
                 f("bot_kirim_perintah")("sendMessage",[
                     "chat_id"=>$chat_id,
                     "text"=>$textkirim,
-                    "parse_mode"=>"HTML"
+                    "parse_mode"=>"HTML",
+                    "reply_markup"=>['force_reply' => true,],
                 ]);
             }
             elseif(!empty($botdata['reply_to_message'])
-            and $botdata['reply_to_message']['from']['username'] == $botname
+            and $botdata['reply_to_message']['from']['username'] == $botuname
             and strpos($botdata['reply_to_message']['text'],"au balas apa") !== false){
                 $kode = explode("~",$botdata['reply_to_message']['text'])[1];
                 $explode = explode("_",$kode);
