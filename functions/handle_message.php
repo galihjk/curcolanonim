@@ -1,6 +1,7 @@
 <?php
 function handle_message($botdata){
     $channel = f("get_config")("channel");
+    $botuname = f("get_config")("botuname");
     $chat = $botdata["chat"];
     $chat_id = $chat["id"];
     if(f("is_private")($botdata)){
@@ -17,9 +18,58 @@ function handle_message($botdata){
                 ]);
             }
             elseif(f("str_is_diawali")($text, "/start bls_")){
+                $text_isi = str_ireplace("/start bls_","",$text);
+                $explode = explode("|",$text_isi);
+                $msgid = $explode[0];
+
+                $text = "Mau balas apa<a href='"
+                .str_replace("@","https://t.me/",$channel) . "/$msgid"
+                ."' >?</a>\n\n~$text_isi";
+
                 f("bot_kirim_perintah")("sendMessage",[
                     "chat_id"=>$chat_id,
                     "text"=>$text."OK",
+                    "parse_mode"=>"HTML"
+                ]);
+            }
+            elseif(!empty($botdata['reply_to_message'])
+            and $botdata['reply_to_message']['from']['username'] == $botname
+            and strpos($botdata['reply_to_message']['text'],"au balas apa") !== false){
+                $kode = explode("~",$botdata['reply_to_message']['text'])[1];
+                $explode = explode("|",$kode);
+                $msgid_curhat = $explode[0];
+                $curhater = strrev($explode[1]);
+                $channelpost = f("bot_kirim_perintah")("sendMessage",[
+                    "chat_id"=>$channel,
+                    "text"=>"loading...",
+                    "reply_to_message_id"=>$msgid_curhat,
+                ]);
+                if($channelpost["result"]["message_id"]){
+                    $msgid = $channelpost["result"]["message_id"];
+                    $channelpost = f("bot_kirim_perintah")("editMessageText",[
+                        "chat_id"=>$channel,
+                        "message_id"=>$msgid,
+                        "text"=>$text,
+                        "parse_mode"=>"HTML",
+                        "disable_web_page_preview"=>true,
+                    ]);
+                    $send_text = "<a href='"
+                    .str_replace("@","https://t.me/",$channel) . "/$msgid"
+                    ."' >lihat</a>";
+                    f("bot_kirim_perintah")("sendMessage",[
+                        "chat_id"=>$curhater,
+                        "text"=>"<a href='"
+                        .str_replace("@","https://t.me/",$channel) . "/$msgid"
+                        ."' >ada yang membalas curhatmu</a>",
+                        "parse_mode"=>"HTML"
+                    ]);
+                }
+                else{
+                    $send_text = "maaf ERROR";
+                }
+                f("bot_kirim_perintah")("sendMessage",[
+                    "chat_id"=>$chat_id,
+                    "text"=>$send_text,
                     "parse_mode"=>"HTML"
                 ]);
             }
@@ -30,10 +80,11 @@ function handle_message($botdata){
                 ]);
                 if($channelpost["result"]["message_id"]){
                     $msgid = $channelpost["result"]["message_id"];
+                    $rchatid = strrev($chat_id);
                     $channelpost = f("bot_kirim_perintah")("editMessageText",[
                         "chat_id"=>$channel,
                         "message_id"=>$msgid,
-                        "text"=>$text."\n\n<a href='t.me/$botname?start=bls_$msgid'>balas</a>",
+                        "text"=>$text."\n\n<a href='t.me/$botuname?start=bls_$msgid|$rchatid'>[balas secara anonim]</a>",
                         "parse_mode"=>"HTML",
                         "disable_web_page_preview"=>true,
                     ]);
@@ -44,7 +95,6 @@ function handle_message($botdata){
                 else{
                     $send_text = "maaf ERROR";
                 }
-                
                 f("bot_kirim_perintah")("sendMessage",[
                     "chat_id"=>$chat_id,
                     "text"=>$send_text,
