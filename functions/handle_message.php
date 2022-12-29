@@ -4,15 +4,14 @@ function handle_message($botdata){
     $chat_id = $chat["id"];
     if(f("is_private")($botdata)){
         //
-        f("bot_kirim_perintah")("sendMessage",[
-            "chat_id"=>$chat_id,
-            "text"=>"ini private",
-        ]);
+        if(f("cek_sudah_subscribe")($chat_id)){
+            //
+        }
     }
     else{
         f("bot_kirim_perintah")("sendMessage",[
             "chat_id"=>$chat_id,
-            "text"=>"ini group",
+            "text"=>"yuk, ke sini ==> @curcolanonim",
         ]);
     }
 }
