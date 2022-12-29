@@ -19,16 +19,16 @@ function handle_message($botdata){
             }
             elseif(f("str_is_diawali")($text, "/start bls_")){
                 $text_isi = str_ireplace("/start bls_","",$text);
-                $explode = explode("|",$text_isi);
+                $explode = explode("_",$text_isi);
                 $msgid = $explode[0];
 
-                $text = "Mau balas apa<a href='"
+                $textkirim = "Mau balas apa<a href='"
                 .str_replace("@","https://t.me/",$channel) . "/$msgid"
                 ."' >?</a>\n\n~$text_isi";
 
                 f("bot_kirim_perintah")("sendMessage",[
                     "chat_id"=>$chat_id,
-                    "text"=>$text."OK",
+                    "text"=>$textkirim,
                     "parse_mode"=>"HTML"
                 ]);
             }
@@ -36,7 +36,7 @@ function handle_message($botdata){
             and $botdata['reply_to_message']['from']['username'] == $botname
             and strpos($botdata['reply_to_message']['text'],"au balas apa") !== false){
                 $kode = explode("~",$botdata['reply_to_message']['text'])[1];
-                $explode = explode("|",$kode);
+                $explode = explode("_",$kode);
                 $msgid_curhat = $explode[0];
                 $curhater = strrev($explode[1]);
                 $channelpost = f("bot_kirim_perintah")("sendMessage",[
@@ -84,7 +84,7 @@ function handle_message($botdata){
                     $channelpost = f("bot_kirim_perintah")("editMessageText",[
                         "chat_id"=>$channel,
                         "message_id"=>$msgid,
-                        "text"=>$text."\n\n<a href='t.me/$botuname?start=bls_$msgid|$rchatid'>[balas secara anonim]</a>",
+                        "text"=>$text."\n\n<a href='t.me/$botuname?start=bls_$msgid"."_"."$rchatid'>[balas secara anonim]</a>",
                         "parse_mode"=>"HTML",
                         "disable_web_page_preview"=>true,
                     ]);
