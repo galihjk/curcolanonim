@@ -51,6 +51,7 @@ function handle_message($botdata){
                     "message_id"=>$msgid_curhat,
                     "text"=>"<i>*Postingan ini telah dilaporkan sebagai penyalahgunaan.</i>\nAlasan: $text"
                         ."\nOleh: ".$botdata['from']['first_name'],
+                    "parse_mode"=>"HTML",
                 ]);
                 f("bot_kirim_perintah")("sendMessage",[
                     "chat_id"=>$curhater,
@@ -75,7 +76,7 @@ function handle_message($botdata){
                 $explode = explode("_",$text_isi);
                 $msgid = (int)$explode[1]-999;
 
-                $textkirim = "Mau balas apa?\n\n<a href='"
+                $textkirim = "Mau balas apa? (minimal 20 karakter)\n\n<a href='"
                 .str_replace("@","https://t.me/",$channel) . "/$msgid"
                 ."' >.</a>~$text_isi";
 
@@ -88,7 +89,9 @@ function handle_message($botdata){
             }
             elseif(!empty($botdata['reply_to_message'])
             and $botdata['reply_to_message']['from']['username'] == $botuname
-            and strpos($botdata['reply_to_message']['text'],"au balas apa") !== false){
+            and strpos($botdata['reply_to_message']['text'],"au balas apa?") !== false
+            and strlen($text) >= 20
+            ){
                 $kode = explode("~",$botdata['reply_to_message']['text'])[1];
                 $explode = explode("_",$kode);
                 $msgid_curhat = (int)$explode[1]-999;
@@ -130,7 +133,7 @@ function handle_message($botdata){
                     "parse_mode"=>"HTML"
                 ]);
             }
-            elseif(f("str_is_diawali")($text, "#") and substr_count($text, ' ')>=2 and strlen($text)>15){
+            elseif(f("str_is_diawali")($text, "#") and substr_count($text, ' ')>=2 and strlen($text)>=20){
                 $channelpost = f("bot_kirim_perintah")("sendMessage",[
                     "chat_id"=>$channel,
                     "text"=>"loading...",
@@ -167,7 +170,7 @@ function handle_message($botdata){
                     "text"=>"<b>FORMAT</b>:\n#(jenis)(spasi)(curhatan kamu)\n\ncontoh:\n"
                     ."<pre>#ditolak Pengen move-on..</pre>\n\n"
                     ."Jenisnya bebas, yg penting diawali tanda pagar (#).\n"
-                    ."Minimal 15 karakter, 1 jenis, dan 2 kata.",
+                    ."Minimal 20 karakter, 1 jenis, dan 2 kata.",
                     "parse_mode"=>"HTML"
                 ]);
             }
