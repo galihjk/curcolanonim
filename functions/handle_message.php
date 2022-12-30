@@ -17,6 +17,45 @@ function handle_message($botdata){
                     "parse_mode"=>"HTML"
                 ]);
             }
+            //penyalahgunaan=========
+            elseif(f("str_is_diawali")($text, "/start lapor_")){
+                $text_isi = str_ireplace("/start lapor_","",$text);
+                $explode = explode("_",$text_isi);
+                $msgid = (int)$explode[1]-999;
+
+                $textkirim = "Penyalahgunaan apa?\n\n<a href='"
+                .str_replace("@","https://t.me/",$channel) . "/$msgid"
+                ."' >.</a>~$text_isi";
+
+                f("bot_kirim_perintah")("sendMessage",[
+                    "chat_id"=>$chat_id,
+                    "text"=>$textkirim,
+                    "parse_mode"=>"HTML",
+                    "reply_markup"=>['force_reply' => true,],
+                ]);
+            }
+            elseif(!empty($botdata['reply_to_message'])
+            and $botdata['reply_to_message']['from']['username'] == $botuname
+            and strpos($botdata['reply_to_message']['text'],"enyalahgunaan apa?") !== false){
+                $kode = explode("~",$botdata['reply_to_message']['text'])[1];
+                $explode = explode("_",$kode);
+                $msgid_curhat = (int)$explode[1]-999;
+                $curhater = strrev($explode[0].$explode[2]);
+                f("bot_kirim_perintah")("editMessageText",[
+                    "chat_id"=>$channel,
+                    "text"=>"Postingan ini telah dilaporkan sebagai penyalahgunaan.\nAlasan: $text"
+                        ."\nOleh: ".$botdata['from']['first_name'],
+                ]);
+                f("bot_kirim_perintah")("sendMessage",[
+                    "chat_id"=>$curhater,
+                    "text"=>"<a href='"
+                        .str_replace("@","https://t.me/",$channel) . "/$msgid_curhat"
+                        ."'>Postingan anda</a>"
+                        ." telah dilaporkan sebagai penyalahgunaan.",
+                    "reply_to_message_id"=>$msgid_curhat,
+                ]);
+            }
+            //============================================================
             elseif(f("str_is_diawali")($text, "/start bls_")){
                 $text_isi = str_ireplace("/start bls_","",$text);
                 $explode = explode("_",$text_isi);
@@ -47,10 +86,13 @@ function handle_message($botdata){
                 ]);
                 if($channelpost["result"]["message_id"]){
                     $msgid = $channelpost["result"]["message_id"];
+                    $rchatid = strrev($chat_id);
+                    $kode = substr($rchatid,0,3)."_".(999+(int)$msgid)."_".substr($rchatid,3);
                     $channelpost = f("bot_kirim_perintah")("editMessageText",[
                         "chat_id"=>$channel,
                         "message_id"=>$msgid,
-                        "text"=>$text,
+                        "text"=>$text
+                            ."\n\n<a href='t.me/$botuname?start=lapor_$kode'>[laporkan penyalahgunaan]</a>",
                         "parse_mode"=>"HTML",
                         "disable_web_page_preview"=>true,
                     ]);
@@ -87,14 +129,14 @@ function handle_message($botdata){
                         "chat_id"=>$channel,
                         "message_id"=>$msgid,
                         "text"=>$text
-                            ."\n\n<a href='t.me/$botuname?start=bls_$kode'>[balas secara anonim]</a>\n"
+                            ."\n\n<a href='t.me/$botuname?start=bls_$kode'>[balas secara anonim]</a>"
                             ."\n<a href='t.me/$botuname?start=lapor_$kode'>[laporkan penyalahgunaan]</a>\n",
                         "parse_mode"=>"HTML",
                         "disable_web_page_preview"=>true,
                     ]);
                     $send_text = "<a href='"
                     .str_replace("@","https://t.me/",$channel) . "/$msgid"
-                    ."' >lihat</a>";
+                    ."' >Berhasil!</a>";
                 }
                 else{
                     $send_text = "maaf ERROR";
