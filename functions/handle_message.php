@@ -43,6 +43,7 @@ function handle_message($botdata){
                 $curhater = strrev($explode[0].$explode[2]);
                 f("bot_kirim_perintah")("editMessageText",[
                     "chat_id"=>$channel,
+                    "message_id"=>$msgid_curhat,
                     "text"=>"Postingan ini telah dilaporkan sebagai penyalahgunaan.\nAlasan: $text"
                         ."\nOleh: ".$botdata['from']['first_name'],
                 ]);
@@ -52,7 +53,7 @@ function handle_message($botdata){
                         .str_replace("@","https://t.me/",$channel) . "/$msgid_curhat"
                         ."'>Postingan anda</a>"
                         ." telah dilaporkan sebagai penyalahgunaan.",
-                    "reply_to_message_id"=>$msgid_curhat,
+                    "parse_mode"=>"HTML",
                 ]);
             }
             //============================================================
