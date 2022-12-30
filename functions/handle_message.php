@@ -17,6 +17,16 @@ function handle_message($botdata){
                     "parse_mode"=>"HTML"
                 ]);
             }
+            elseif(f("str_is_diawali")($text, "/start buat_")){
+                $jenis = str_ireplace("/start buat_","",$text);
+                f("bot_kirim_perintah")("sendMessage",[
+                    "chat_id"=>$chat_id,
+                    "text"=>"Kirim curhatan mu di sini.\n\n"
+                        ."<b>Format</b>:\n#(jenis)(spasi)(curhatan kamu)\n\ncontoh:\n"
+                        ."<pre>#$jenis Bla bla bla....</pre>\n\n",
+                    "parse_mode"=>"HTML"
+                ]);
+            }
             //penyalahgunaan=========
             elseif(f("str_is_diawali")($text, "/start lapor_")){
                 $text_isi = str_ireplace("/start lapor_","",$text);
@@ -142,12 +152,15 @@ function handle_message($botdata){
                     $rchatid = strrev($chat_id);
                     $msgid = $channelpost["result"]["message_id"];
                     $kode = substr($rchatid,0,3)."_".(999+(int)$msgid)."_".substr($rchatid,3);
+                    $jenis = explode(" ",$text)[0];
+                    $jenis = str_replace("#","",$jenis);
                     $channelpost = f("bot_kirim_perintah")("editMessageText",[
                         "chat_id"=>$channel,
                         "message_id"=>$msgid,
                         "text"=>$text
                             ."\n\n<a href='t.me/$botuname?start=bls_$kode'>[balas secara anonim]</a>"
-                            ."\n<a href='t.me/$botuname?start=lapor_$kode'>[laporkan penyalahgunaan]</a>\n",
+                            ."\n<a href='t.me/$botuname?start=lapor_$kode'>[laporkan penyalahgunaan]</a>\n"
+                            ."\n<a href='t.me/$botuname?start=buat_$jenis'>[buat curhatan baru]</a>\n",
                         "parse_mode"=>"HTML",
                         "disable_web_page_preview"=>true,
                     ]);
