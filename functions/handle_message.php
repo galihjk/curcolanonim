@@ -87,8 +87,8 @@ function handle_message($botdata){
                         "chat_id"=>$channel,
                         "message_id"=>$msgid,
                         "text"=>$text
-                            ."\n\n<a href='t.me/$botuname?start=bls_$msgid"."_"."$kode'>[balas secara anonim]</a>\n"
-                            ."\n\n<a href='t.me/$botuname?start=lapor_$msgid"."_"."$kode'>[laporkan penyalahgunaan]</a>\n",
+                            ."\n\n<a href='t.me/$botuname?start=bls_$kode'>[balas secara anonim]</a>\n"
+                            ."\n<a href='t.me/$botuname?start=lapor_$kode'>[laporkan penyalahgunaan]</a>\n",
                         "parse_mode"=>"HTML",
                         "disable_web_page_preview"=>true,
                     ]);
