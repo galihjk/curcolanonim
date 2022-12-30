@@ -20,11 +20,11 @@ function handle_message($botdata){
             elseif(f("str_is_diawali")($text, "/start bls_")){
                 $text_isi = str_ireplace("/start bls_","",$text);
                 $explode = explode("_",$text_isi);
-                $msgid = $explode[0];
+                $msgid = (int)$explode[1]-999;
 
-                $textkirim = "Mau balas apa<a href='"
+                $textkirim = "Mau balas apa?\n\n<a href='"
                 .str_replace("@","https://t.me/",$channel) . "/$msgid"
-                ."' >?</a>\n\n~$text_isi";
+                ."' >.</a>~$text_isi";
 
                 f("bot_kirim_perintah")("sendMessage",[
                     "chat_id"=>$chat_id,
@@ -38,8 +38,8 @@ function handle_message($botdata){
             and strpos($botdata['reply_to_message']['text'],"au balas apa") !== false){
                 $kode = explode("~",$botdata['reply_to_message']['text'])[1];
                 $explode = explode("_",$kode);
-                $msgid_curhat = $explode[0];
-                $curhater = strrev($explode[1]);
+                $msgid_curhat = (int)$explode[1]-999;
+                $curhater = strrev($explode[0].$explode[2]);
                 $channelpost = f("bot_kirim_perintah")("sendMessage",[
                     "chat_id"=>$channel,
                     "text"=>"loading...",
@@ -56,12 +56,12 @@ function handle_message($botdata){
                     ]);
                     $send_text = "<a href='"
                     .str_replace("@","https://t.me/",$channel) . "/$msgid"
-                    ."' >lihat</a>";
+                    ."' >Berhasil!</a>";
                     f("bot_kirim_perintah")("sendMessage",[
                         "chat_id"=>$curhater,
                         "text"=>"<a href='"
                         .str_replace("@","https://t.me/",$channel) . "/$msgid"
-                        ."' >ada yang membalas curhatmu</a>",
+                        ."' >Seseorang</a> membalas curhatanmu secara anonim",
                         "parse_mode"=>"HTML"
                     ]);
                 }
@@ -74,18 +74,21 @@ function handle_message($botdata){
                     "parse_mode"=>"HTML"
                 ]);
             }
-            elseif(f("str_is_diawali")($text, "#")){
+            elseif(f("str_is_diawali")($text, "#") and substr_count($text, ' ')>=2 and strlen($text)>15){
                 $channelpost = f("bot_kirim_perintah")("sendMessage",[
                     "chat_id"=>$channel,
                     "text"=>"loading...",
                 ]);
                 if($channelpost["result"]["message_id"]){
-                    $msgid = $channelpost["result"]["message_id"];
                     $rchatid = strrev($chat_id);
+                    $msgid = $channelpost["result"]["message_id"];
+                    $kode = substr($rchatid,0,3)."_".(999+(int)$msgid)."_".substr($rchatid,3);
                     $channelpost = f("bot_kirim_perintah")("editMessageText",[
                         "chat_id"=>$channel,
                         "message_id"=>$msgid,
-                        "text"=>$text."\n\n<a href='t.me/$botuname?start=bls_$msgid"."_"."$rchatid'>[balas secara anonim]</a>",
+                        "text"=>$text
+                            ."\n\n<a href='t.me/$botuname?start=bls_$msgid"."_"."$kode'>[balas secara anonim]</a>\n"
+                            ."\n\n<a href='t.me/$botuname?start=lapor_$msgid"."_"."$kode'>[laporkan penyalahgunaan]</a>\n",
                         "parse_mode"=>"HTML",
                         "disable_web_page_preview"=>true,
                     ]);
@@ -99,6 +102,16 @@ function handle_message($botdata){
                 f("bot_kirim_perintah")("sendMessage",[
                     "chat_id"=>$chat_id,
                     "text"=>$send_text,
+                    "parse_mode"=>"HTML"
+                ]);
+            }
+            else{
+                f("bot_kirim_perintah")("sendMessage",[
+                    "chat_id"=>$chat_id,
+                    "text"=>"<b>FORMAT</b>:\n#(jenis)(spasi)(curhatan kamu)\n\ncontoh:\n"
+                    ."<pre>#ditolak Pengen move-on..</pre>\n\n"
+                    ."Jenisnya bebas, yg penting diawali tanda pagar (#).\n"
+                    ."Minimal 15 karakter, 1 jenis, dan 2 kata.",
                     "parse_mode"=>"HTML"
                 ]);
             }
