@@ -41,10 +41,15 @@ function handle_message($botdata){
                 $explode = explode("_",$kode);
                 $msgid_curhat = (int)$explode[1]-999;
                 $curhater = strrev($explode[0].$explode[2]);
+                f("bot_kirim_perintah")("forwardMessage",[
+                    "chat_id"=>$curhater,
+                    "from_chat_id"=>$channel,
+                    "message_id"=>$msgid_curhat,
+                ]);
                 f("bot_kirim_perintah")("editMessageText",[
                     "chat_id"=>$channel,
                     "message_id"=>$msgid_curhat,
-                    "text"=>"Postingan ini telah dilaporkan sebagai penyalahgunaan.\nAlasan: $text"
+                    "text"=>"<i>*Postingan ini telah dilaporkan sebagai penyalahgunaan.</i>\nAlasan: $text"
                         ."\nOleh: ".$botdata['from']['first_name'],
                 ]);
                 f("bot_kirim_perintah")("sendMessage",[
@@ -54,6 +59,14 @@ function handle_message($botdata){
                         ."'>Postingan anda</a>"
                         ." telah dilaporkan sebagai penyalahgunaan.",
                     "parse_mode"=>"HTML",
+                ]);
+                f("bot_kirim_perintah")("sendMessage",[
+                    "chat_id"=>$chat_id,
+                    "text"=>"<a href='"
+                        .str_replace("@","https://t.me/",$channel) . "/$msgid_curhat"
+                        ."' >Berhasil!</a>",
+                    "parse_mode"=>"HTML",
+                    "reply_markup"=>['force_reply' => true,],
                 ]);
             }
             //============================================================
