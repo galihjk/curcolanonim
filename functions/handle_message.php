@@ -22,9 +22,9 @@ function handle_message($botdata){
                 f("bot_kirim_perintah")("sendMessage",[
                     "chat_id"=>$chat_id,
                     "text"=>"Kirim curhatan mu di sini.\n\n"
-                        ."<b>Format</b>:\n#(jenis)(spasi)(curhatan kamu)\n\ncontoh:\n"
-                        ."<pre>#$jenis Bla bla bla....</pre>\n\n",
-                    "parse_mode"=>"HTML"
+                        ."Format:\n#(jenis)(spasi)(curhatan kamu)\n\ncontoh:\n"
+                        ."`#$jenis Bla bla bla....`",
+                    "parse_mode"=>"MarkDown"
                 ]);
             }
             //penyalahgunaan=========
@@ -159,7 +159,7 @@ function handle_message($botdata){
                         "message_id"=>$msgid,
                         "text"=>$text
                             ."\n\n<a href='t.me/$botuname?start=bls_$kode'>[balas secara anonim]</a>"
-                            ."\n<a href='t.me/$botuname?start=lapor_$kode'>[laporkan penyalahgunaan]</a>\n"
+                            ."\n<a href='t.me/$botuname?start=lapor_$kode'>[laporkan penyalahgunaan]</a>"
                             ."\n<a href='t.me/$botuname?start=buat_$jenis'>[buat curhatan baru]</a>\n",
                         "parse_mode"=>"HTML",
                         "disable_web_page_preview"=>true,
@@ -180,11 +180,11 @@ function handle_message($botdata){
             else{
                 f("bot_kirim_perintah")("sendMessage",[
                     "chat_id"=>$chat_id,
-                    "text"=>"<b>FORMAT</b>:\n#(jenis)(spasi)(curhatan kamu)\n\ncontoh:\n"
-                    ."<pre>#ditolak Pengen move-on..</pre>\n\n"
+                    "text"=>"FORMAT:\n#(jenis)(spasi)(curhatan kamu)\n\ncontoh:\n"
+                    ."`#ditolak Pengen move-on..`\n\n"
                     ."Jenisnya bebas, yg penting diawali tanda pagar (#).\n"
                     ."Minimal 20 karakter, 1 jenis, dan 2 kata.",
-                    "parse_mode"=>"HTML"
+                    "parse_mode"=>"MarkDown"
                 ]);
             }
         }
