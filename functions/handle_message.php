@@ -83,7 +83,6 @@ function handle_message($botdata){
                         .str_replace("@","https://t.me/",$channel) . "/$msgid_curhat"
                         ."' >Berhasil!</a>",
                     "parse_mode"=>"HTML",
-                    "reply_markup"=>['force_reply' => true,],
                 ]);
             }
             //============================================================
