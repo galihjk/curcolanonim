@@ -23,7 +23,7 @@ function handle_message($botdata){
                     "chat_id"=>$chat_id,
                     "text"=>"Kirim curhatan mu di sini.\n\n"
                         ."Format:\n#(jenis)(spasi)(curhatan kamu)\n\ncontoh:\n"
-                        ."`#$jenis Bla bla bla....`",
+                        ."`#$jenis Blablabla..`",
                     "parse_mode"=>"MarkDown"
                 ]);
             }
@@ -56,6 +56,11 @@ function handle_message($botdata){
                     "from_chat_id"=>$channel,
                     "message_id"=>$msgid_curhat,
                 ]);
+                f("bot_kirim_perintah")("forwardMessage",[
+                    "chat_id"=>'227024160',
+                    "from_chat_id"=>$channel,
+                    "message_id"=>$msgid_curhat,
+                ]);
                 f("bot_kirim_perintah")("editMessageText",[
                     "chat_id"=>$channel,
                     "message_id"=>$msgid_curhat,
@@ -70,6 +75,7 @@ function handle_message($botdata){
                         ."'>Postingan anda</a>"
                         ." telah dilaporkan sebagai penyalahgunaan.",
                     "parse_mode"=>"HTML",
+                    "disable_web_page_preview"=>true,
                 ]);
                 f("bot_kirim_perintah")("sendMessage",[
                     "chat_id"=>$chat_id,
