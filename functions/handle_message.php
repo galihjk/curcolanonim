@@ -198,12 +198,14 @@ function handle_message($botdata){
     elseif($chat_id == $commentgroup){
         $text = $botdata["text"] ?? "";
         if($text){
-            $message_thread_id = $botdata["[message_thread_id"];
+            $message_thread_id = $botdata["message_thread_id"];
+            $message_id = $botdata["message_id"];
             f("bot_kirim_perintah")("sendMessage",[
                 "chat_id"=>$chat_id,
                 "text"=>"ini ".print_r($botdata,true),
                 "parse_mode"=>"HTML",
                 "message_thread_id"=>$message_thread_id,
+                "reply_to_message_id"=>$message_id,
             ]);
         }
     }
