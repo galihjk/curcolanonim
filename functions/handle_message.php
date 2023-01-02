@@ -125,7 +125,8 @@ function handle_message($botdata){
                         "chat_id"=>$channel,
                         "message_id"=>$msgid,
                         "text"=>$text
-                            ."\n\n<a href='t.me/$botuname?start=lapor_$kode'>[laporkan penyalahgunaan]</a>",
+                            ."\n\n<a href='t.me/$botuname?start=lapor_$kode'>[laporkan penyalahgunaan]</a>"
+                            ."\n<a href='t.me/$botuname?start=buat_random'>[buat curhatan baru]</a>\n",
                         "parse_mode"=>"HTML",
                         "disable_web_page_preview"=>true,
                     ]);
@@ -198,15 +199,32 @@ function handle_message($botdata){
     elseif($chat_id == $commentgroup){
         $text = $botdata["text"] ?? "";
         if($text){
-            $message_thread_id = $botdata["message_thread_id"];
-            $message_id = $botdata["message_id"];
-            f("bot_kirim_perintah")("sendMessage",[
-                "chat_id"=>$chat_id,
-                "text"=>"ini ".print_r($botdata,true),
-                "parse_mode"=>"HTML",
-                // "message_thread_id"=>$message_thread_id,
-                "reply_to_message_id"=>$message_thread_id,
-            ]);
+            $reply_to_message = $botdata['reply_to_message'];
+            $entities = $reply_to_message['entities'];
+            foreach($entities as $entity){
+                if($empty($entity['url'])
+                and f("str_is_diawali")($entity['url'], "http://t.me/curcolanonimbot?start=lapor_")
+                ){
+                    $kode = str_replace("http://t.me/curcolanonimbot?start=lapor_","",$entity['url']);
+                    $explode = explode("_",$kode);
+                    $msgid_curhat = (int)$explode[1]-999;
+                    $curhater = strrev($explode[0].$explode[2]);
+                    $url = "https://t.me/$channel/$msgid_curhat?comment=$reply_to_message";
+                    ("bot_kirim_perintah")("sendMessage",[
+                        "chat_id"=>$curhater,
+                        "text"=>"ini $url",
+                        "parse_mode"=>"HTML",
+                    ]);
+
+                    // $message_id = $botdata["message_id"];
+                    // f("bot_kirim_perintah")("sendMessage",[
+                    //     "chat_id"=>$chat_id,
+                    //     "text"=>"ini ".print_r($botdata,true),
+                    //     "parse_mode"=>"HTML",
+                    //     "reply_to_message_id"=>$message_thread_id,
+                    // ]);
+                }
+            }
         }
     }
     else{
