@@ -225,7 +225,7 @@ function handle_message($botdata){
                     $url = str_replace("@","https://t.me/",$channel)."/$msgid_curhat?comment=".$botdata['message_id'];
                     f("bot_kirim_perintah")("sendMessage",[
                         "chat_id"=>$curhater,
-                        "text"=>"Ada <a href='$url'>komentar</a> untuk mu. \n<i>*Balas di sini untuk mengirim pesan secara anonim</i>.\n~$msgid_curhat",
+                        "text"=>"Ada <a href='$url'>komentar</a> untuk mu. \n<i>*Balas di sini untuk mengirim pesan secara anonim</i>.\n~".$botdata['message_thread_id'],
                         "parse_mode"=>"HTML",
                         "reply_markup"=>['force_reply' => true,],
                     ]);
