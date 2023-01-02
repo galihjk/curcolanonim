@@ -2,6 +2,7 @@
 function handle_message($botdata){
     $channel = f("get_config")("channel");
     $botuname = f("get_config")("botuname");
+    $commentgroup = f("get_config")("commentgroup");
     $chat = $botdata["chat"];
     $chat_id = $chat["id"];
     if(f("is_private")($botdata)){
@@ -192,6 +193,16 @@ function handle_message($botdata){
                     "parse_mode"=>"MarkDown"
                 ]);
             }
+        }
+    }
+    elseif($chat_id == $commentgroup){
+        $text = $botdata["text"] ?? "";
+        if($text){
+            f("bot_kirim_perintah")("sendMessage",[
+                "chat_id"=>$chat_id,
+                "text"=>"ini ".print_r($botdata,true),
+                "parse_mode"=>"HTML"
+            ]);
         }
     }
     else{
