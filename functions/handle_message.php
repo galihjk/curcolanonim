@@ -184,6 +184,19 @@ function handle_message($botdata){
                     "parse_mode"=>"HTML"
                 ]);
             }
+            //balas comment
+            elseif(!empty($botdata['reply_to_message'])
+            and $botdata['reply_to_message']['from']['username'] == $botuname
+            and strpos($botdata['reply_to_message']['text'],"alas di sini untuk mengirim pesan secara anoni") !== false){
+                f("bot_kirim_perintah")("sendMessage",[
+                    "chat_id"=>$commentgroup,
+                    "text"=>"<i>Curhater:</i>\n$text",
+                    "parse_mode"=>"HTML",
+                    "disable_web_page_preview"=>true,
+                    "reply_to_message_id"=>explode("~",$botdata['reply_to_message']['text'])[1],
+                ]);
+            }
+            //================================================================
             else{
                 f("bot_kirim_perintah")("sendMessage",[
                     "chat_id"=>$chat_id,
@@ -212,17 +225,10 @@ function handle_message($botdata){
                     $url = str_replace("@","https://t.me/",$channel)."/$msgid_curhat?comment=".$botdata['message_id'];
                     f("bot_kirim_perintah")("sendMessage",[
                         "chat_id"=>$curhater,
-                        "text"=>"Ada <a href='$url'>balasan</a> untuk pesan mu. Balas di sini untuk mengirim pesan secara anonim.\n~$msgid_curhat",
+                        "text"=>"Ada <a href='$url'>komentar</a> untuk mu. \n<i>*Balas di sini untuk mengirim pesan secara anonim</i>.\n~$msgid_curhat",
                         "parse_mode"=>"HTML",
+                        "reply_markup"=>['force_reply' => true,],
                     ]);
-
-                    // $message_id = $botdata["message_id"];
-                    // f("bot_kirim_perintah")("sendMessage",[
-                    //     "chat_id"=>$chat_id,
-                    //     "text"=>"ini ".print_r($botdata,true),
-                    //     "parse_mode"=>"HTML",
-                    //     "reply_to_message_id"=>$message_thread_id,
-                    // ]);
                 }
             }
         }
