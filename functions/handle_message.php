@@ -209,10 +209,10 @@ function handle_message($botdata){
                     $explode = explode("_",$kode);
                     $msgid_curhat = (int)$explode[1]-999;
                     $curhater = strrev($explode[0].$explode[2]);
-                    $url = "https://t.me/$channel/$msgid_curhat?comment=$reply_to_message";
+                    $url = "https://t.me/$channel/$msgid_curhat?comment=".$botdata['message_id'];
                     f("bot_kirim_perintah")("sendMessage",[
                         "chat_id"=>$curhater,
-                        "text"=>"ini $url",
+                        "text"=>"Ada <a href='$url'>balasan</a> untuk pesan mu. Balas di sini untuk mengirim pesan secara anonim.\n~$msgid_curhat",
                         "parse_mode"=>"HTML",
                     ]);
 
