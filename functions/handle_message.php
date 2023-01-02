@@ -210,7 +210,7 @@ function handle_message($botdata){
                     $msgid_curhat = (int)$explode[1]-999;
                     $curhater = strrev($explode[0].$explode[2]);
                     $url = "https://t.me/$channel/$msgid_curhat?comment=$reply_to_message";
-                    ("bot_kirim_perintah")("sendMessage",[
+                    f("bot_kirim_perintah")("sendMessage",[
                         "chat_id"=>$curhater,
                         "text"=>"ini $url",
                         "parse_mode"=>"HTML",
