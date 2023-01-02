@@ -202,7 +202,7 @@ function handle_message($botdata){
             $reply_to_message = $botdata['reply_to_message'];
             $entities = $reply_to_message['entities'];
             foreach($entities as $entity){
-                if($empty($entity['url'])
+                if(!empty($entity['url'])
                 and f("str_is_diawali")($entity['url'], "http://t.me/curcolanonimbot?start=lapor_")
                 ){
                     $kode = str_replace("http://t.me/curcolanonimbot?start=lapor_","",$entity['url']);
