@@ -204,8 +204,8 @@ function handle_message($botdata){
                 "chat_id"=>$chat_id,
                 "text"=>"ini ".print_r($botdata,true),
                 "parse_mode"=>"HTML",
-                "message_thread_id"=>$message_thread_id,
-                "reply_to_message_id"=>$message_id,
+                // "message_thread_id"=>$message_thread_id,
+                "reply_to_message_id"=>$message_thread_id,
             ]);
         }
     }
