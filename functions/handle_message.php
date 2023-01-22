@@ -126,7 +126,7 @@ function handle_message($botdata){
                         "message_id"=>$msgid,
                         "text"=>$text
                             ."\n\n<a href='t.me/$botuname?start=bls_$kode'>[balas secara anonim]</a>"
-                            ."\n\n<a href='t.me/$botuname?start=lapor_$kode'>[laporkan penyalahgunaan]</a>"
+                            ."\n<a href='t.me/$botuname?start=lapor_$kode'>[laporkan penyalahgunaan]</a>"
                             ."\n<a href='t.me/$botuname?start=buat_random'>[buat curhatan baru]</a>\n",
                         "parse_mode"=>"HTML",
                         "disable_web_page_preview"=>true,
