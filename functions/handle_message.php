@@ -198,6 +198,15 @@ function handle_message($botdata){
                 ]);
             }
             //================================================================
+            // start conversation
+            elseif((f("str_is_diawali")($text, "/start stcon_"))){
+                $nama_samaran = f("str_gen_name")();
+                f("bot_kirim_perintah")("sendMessage",[
+                    "chat_id"=>$chat_id,
+                    "text"=>"Nama samaran anda: $nama_samaran",
+                ]);
+            }
+            //================================================================
             else{
                 f("bot_kirim_perintah")("sendMessage",[
                     "chat_id"=>$chat_id,
