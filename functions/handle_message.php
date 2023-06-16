@@ -213,7 +213,7 @@ function handle_message($botdata){
                 $result = f("gptRequest")($gptReqMsg);
                 f("bot_kirim_perintah")("sendMessage",[
                     "chat_id"=>$chat_id,
-                    "text"=>print_r($result),
+                    "text"=>print_r($result, true),
                 ]);
             }
             //================================================================
