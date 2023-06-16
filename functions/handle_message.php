@@ -207,6 +207,16 @@ function handle_message($botdata){
                 ]);
             }
             //================================================================
+            // gpt request
+            elseif((f("str_is_diawali")($text, "/gpt "))){
+                $gptReqMsg = str_replace("/gpt ", "", $text);
+                $result = f("gptRequest")($gptReqMsg);
+                f("bot_kirim_perintah")("sendMessage",[
+                    "chat_id"=>$chat_id,
+                    "text"=>print_r($result),
+                ]);
+            }
+            //================================================================
             else{
                 f("bot_kirim_perintah")("sendMessage",[
                     "chat_id"=>$chat_id,
