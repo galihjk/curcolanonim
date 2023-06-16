@@ -3,7 +3,7 @@ function gptRequest($message) {
     $url = 'https://api.openai.com/v1/engines/davinci-codex/completions';
     $headers = array(
         'Content-Type: application/json',
-        'Authorization: Bearer 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'
+        'Authorization: Bearer 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'
     );
 
     $data = array(
