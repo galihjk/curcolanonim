@@ -19,7 +19,7 @@ function handle_callback_query_konfirmkirim($botdata){
         if(!empty($result['ok'])){
             $channel = f("get_config")("channel");
             $botuname = f("get_config")("botuname");
-            $text = $botdata["text"] ?? "";
+            $text = $datakirim["text"] ?? "";
             $channelpost = f("bot_kirim_perintah")("sendMessage",[
                 "chat_id"=>$channel,
                 "text"=>"loading...",
