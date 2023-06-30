@@ -2,7 +2,8 @@
 include("init.php");
 
 $jenis_update = [
-    "message"
+    "message",
+    "callback_query",
 ];
 
 f("handle_update_sesuai_jenis")($jenis_update);
