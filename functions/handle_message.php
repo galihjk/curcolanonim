@@ -108,17 +108,6 @@ function handle_message($botdata){
             and strpos($botdata['reply_to_message']['text'],"au balas apa?") !== false
             and strlen($text) >= 20
             ){
-                //kirim konfirmasi curhat
-                f("bot_kirim_perintah")("sendMessage",[
-                    "chat_id"=>$chat_id,
-                    "text"=>"KONFIRMASI",
-                    "parse_mode"=>"HTML",
-                    "reply_to_message_id"=>$botdata["message_id"],
-                    'reply_markup'=>f("gen_inline_keyboard")([
-                        ['✅ Kirim', 'kirim']
-                    ]),
-                ]);
-                /*
                 $kode = explode("~",$botdata['reply_to_message']['text'])[1];
                 $explode = explode("_",$kode);
                 $msgid_curhat = (int)$explode[1]-999;
@@ -161,9 +150,19 @@ function handle_message($botdata){
                     "text"=>$send_text,
                     "parse_mode"=>"HTML"
                 ]);
-                */
             }
             elseif(f("str_is_diawali")($text, "#") and substr_count($text, ' ')>=2 and strlen($text)>=20){
+                //kirim konfirmasi curhat
+                f("bot_kirim_perintah")("sendMessage",[
+                    "chat_id"=>$chat_id,
+                    "text"=>"KONFIRMASI",
+                    "parse_mode"=>"HTML",
+                    "reply_to_message_id"=>$botdata["message_id"],
+                    'reply_markup'=>f("gen_inline_keyboard")([
+                        ['✅ Kirim', 'kirim']
+                    ]),
+                ]);
+                /*
                 $channelpost = f("bot_kirim_perintah")("sendMessage",[
                     "chat_id"=>$channel,
                     "text"=>"loading...",
@@ -196,6 +195,7 @@ function handle_message($botdata){
                     "text"=>$send_text,
                     "parse_mode"=>"HTML"
                 ]);
+                */
             }
             //balas comment
             elseif(!empty($botdata['reply_to_message'])
