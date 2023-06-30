@@ -155,47 +155,13 @@ function handle_message($botdata){
                 //kirim konfirmasi curhat
                 f("bot_kirim_perintah")("sendMessage",[
                     "chat_id"=>$chat_id,
-                    "text"=>"KONFIRMASI",
+                    "text"=>"KONFIRMASI\n<i>*Klik tombol kirim untuk melanjutkan.</i>",
                     "parse_mode"=>"HTML",
                     "reply_to_message_id"=>$botdata["message_id"],
                     'reply_markup'=>f("gen_inline_keyboard")([
-                        ['✅ Kirim', 'kirim']
+                        ['✅ KIRIM', 'kirim']
                     ]),
                 ]);
-                /*
-                $channelpost = f("bot_kirim_perintah")("sendMessage",[
-                    "chat_id"=>$channel,
-                    "text"=>"loading...",
-                ]);
-                if($channelpost["result"]["message_id"]){
-                    $rchatid = strrev($chat_id);
-                    $msgid = $channelpost["result"]["message_id"];
-                    $kode = substr($rchatid,0,3)."_".(999+(int)$msgid)."_".substr($rchatid,3);
-                    $jenis = explode(" ",$text)[0];
-                    $jenis = str_replace("#","",$jenis);
-                    $channelpost = f("bot_kirim_perintah")("editMessageText",[
-                        "chat_id"=>$channel,
-                        "message_id"=>$msgid,
-                        "text"=>$text
-                            ."\n\n<a href='t.me/$botuname?start=bls_$kode'>[balas secara anonim]</a>"
-                            ."\n<a href='t.me/$botuname?start=lapor_$kode'>[laporkan penyalahgunaan]</a>"
-                            ."\n<a href='t.me/$botuname?start=buat_$jenis'>[buat curhatan baru]</a>\n",
-                        "parse_mode"=>"HTML",
-                        "disable_web_page_preview"=>true,
-                    ]);
-                    $send_text = "<a href='"
-                    .str_replace("@","https://t.me/",$channel) . "/$msgid"
-                    ."' >Berhasil!</a>";
-                }
-                else{
-                    $send_text = "maaf ERROR";
-                }
-                f("bot_kirim_perintah")("sendMessage",[
-                    "chat_id"=>$chat_id,
-                    "text"=>$send_text,
-                    "parse_mode"=>"HTML"
-                ]);
-                */
             }
             //balas comment
             elseif(!empty($botdata['reply_to_message'])
