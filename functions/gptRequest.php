@@ -1,4 +1,6 @@
 <?php
+die("unused");
+/*
 function gptRequest($message) {
     $url = 'https://api.openai.com/v1/engines/davinci-codex/completions';
     $headers = array(
@@ -23,3 +25,4 @@ function gptRequest($message) {
 
     return json_decode($response, true)['choices'][0]['text'];
 }
+*/
