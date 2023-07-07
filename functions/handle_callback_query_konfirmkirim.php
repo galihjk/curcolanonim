@@ -8,7 +8,7 @@ function handle_callback_query_konfirmkirim($botdata){
         f("bot_kirim_perintah")('answerCallbackQuery',[
             'callback_query_id' => $botdata['id'],
             'text' => "SIAP!",
-            'show_alert' => true,
+            'show_alert' => false,
         ]);
         $chat_id = $botdata["message"]["chat"]["id"];
         $message_id = $botdata["message"]["message_id"];
@@ -53,6 +53,25 @@ function handle_callback_query_konfirmkirim($botdata){
                 "parse_mode"=>"HTML"
             ]);
         }
+        return true;
+    }
+    elseif(!empty($botdata["data"]) 
+    and $botdata["data"] == "kirimbatal"
+    ){
+        $datakirim = $botdata["message"]["reply_to_message"];
+        $jenis = str_replace("kirim_","",$botdata["data"]);
+        f("bot_kirim_perintah")('answerCallbackQuery',[
+            'callback_query_id' => $botdata['id'],
+            'text' => "Dibatalkan!",
+            'show_alert' => false,
+        ]);
+        $chat_id = $botdata["message"]["chat"]["id"];
+        $message_id = $botdata["message"]["message_id"];
+        $result = f("bot_kirim_perintah")("deleteMessage",[
+            'chat_id'=>$chat_id,
+            'message_id'=>$message_id,
+        ]);
+        f("data_save")("waitingsendconfirm$chat_id",0);
         return true;
     }
     return false;

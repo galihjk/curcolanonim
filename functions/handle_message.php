@@ -153,15 +153,26 @@ function handle_message($botdata){
             }
             elseif(f("str_is_diawali")($text, "#") and substr_count($text, ' ')>=2 and strlen($text)>=20){
                 //kirim konfirmasi curhat
-                f("bot_kirim_perintah")("sendMessage",[
+                $lastconfirm = f("data_load")("waitingsendconfirm$chat_id",0);
+                if(!empty($lastconfirm)){
+                    f("bot_kirim_perintah")("deleteMessage",[
+                        'chat_id'=>$chat_id,
+                        'message_id'=>$lastconfirm,
+                    ]);
+                }
+                $kirimconfirm = f("bot_kirim_perintah")("sendMessage",[
                     "chat_id"=>$chat_id,
                     "text"=>"KONFIRMASI\n<i>*Klik tombol kirim untuk melanjutkan.</i>",
                     "parse_mode"=>"HTML",
                     "reply_to_message_id"=>$botdata["message_id"],
                     'reply_markup'=>f("gen_inline_keyboard")([
+                        ['❌ BATAL', "kirimbatal"],
                         ['✅ KIRIM', 'kirim']
-                    ]),
+                    ],2),
                 ]);
+                if(!empty($kirimconfirm["result"]["message_id"])){
+                    f("data_save")("waitingsendconfirm$chat_id",$kirimconfirm["result"]["message_id"]);
+                }
             }
             //balas comment
             elseif(!empty($botdata['reply_to_message'])
