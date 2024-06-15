@@ -186,6 +186,30 @@ function handle_message($botdata){
                     "reply_to_message_id"=>explode("~",$botdata['reply_to_message']['text'])[1],
                 ]);
             }
+            // donate
+            elseif($text == "/donate"){
+                $result = f("bot_kirim_perintah")("sendInvoice",[
+                    "chat_id"=>$chat_id,
+                    "title"=>"Donasi",
+                    "description"=>"Donasi untuk Curcol Anonim",
+                    "payload"=>"donate$chat_id",
+                    "currency"=>"XTR",
+                    "prices"=>[
+                        [
+                            "label"=>"donasi",
+                            "amount"=>1,
+                        ],
+                    ],
+                    "text"=>"<i>Curhater:</i>\n$text",
+                    "parse_mode"=>"HTML",
+                    "disable_web_page_preview"=>true,
+                    "reply_to_message_id"=>explode("~",$botdata['reply_to_message']['text'])[1],
+                ]);
+                f("bot_kirim_perintah")("sendMessage",[
+                    "chat_id"=>"227024160",
+                    "text"=>"hasil:".print_r($result,true),
+                ]);
+            }
             //================================================================
             // start conversation
             elseif((f("str_is_diawali")($text, "/start stcon_"))){
